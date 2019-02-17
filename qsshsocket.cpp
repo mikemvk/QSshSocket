@@ -78,8 +78,8 @@ void QSshSocket::run()
                 int verbosity = SSH_LOG_PROTOCOL;
 
                 // set the pertinant ssh session options
-                ssh_options_set(m_session, SSH_OPTIONS_HOST, m_host.toAscii().data());
-                ssh_options_set(m_session, SSH_OPTIONS_USER, m_user.toAscii().data());
+                ssh_options_set(m_session, SSH_OPTIONS_HOST, m_host.toUtf8().data());
+                ssh_options_set(m_session, SSH_OPTIONS_USER, m_user.toUtf8().data());
                 ssh_options_set(m_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
                 ssh_options_set(m_session, SSH_OPTIONS_PORT, &m_port);
 
@@ -108,7 +108,7 @@ void QSshSocket::run()
             {
 
                 // try authenticating current user at remote host
-                int worked = ssh_userauth_password(m_session, m_user.toAscii().data(), m_password.toAscii().data());
+                int worked = ssh_userauth_password(m_session, m_user.toUtf8().data(), m_password.toUtf8().data());
 
 
                 // if successful, store user password.
@@ -125,6 +125,34 @@ void QSshSocket::run()
                 }
 
 
+            }
+            // check to see if a username and a private key have been given
+            else if(m_user != "" && m_key != "")
+            {
+                ssh_key private_key;
+
+                if(ssh_pki_import_privkey_base64(m_key.toUtf8().data(), NULL, NULL, NULL, &private_key) == SSH_OK)
+                {
+                    // try authenticating current user at remote host
+                    int worked = ssh_userauth_publickey(m_session, m_user.toUtf8().data(), private_key);
+
+                    // if successful, store user key.
+                    if (worked == SSH_OK)
+                    {
+                        loginSuccessful();
+                        m_loggedIn = true;
+                    }
+                    else
+                    {
+                        m_key = "";
+                        error(PasswordAuthenticationFailedError);
+                    }
+                }
+                else
+                {
+                    m_key = "";
+                    error(PasswordAuthenticationFailedError);
+                }
             }
         }
         // if all ssh setup has been completed, check to see if we have any commands to execute
@@ -147,7 +175,7 @@ void QSshSocket::run()
 
                 // attempt to execute shell command
                 while (requestResponse == SSH_AGAIN)
-                    requestResponse = ssh_channel_request_exec(channel, m_currentOperation.adminCommand.toAscii().data());
+                    requestResponse = ssh_channel_request_exec(channel, m_currentOperation.adminCommand.toUtf8().data());
 
                 // if attempt not executed, close connection then return
                 if (requestResponse != SSH_OK)
@@ -189,7 +217,7 @@ void QSshSocket::run()
             // if all ssh setup has been completed, check to see if we have any file transfers to execute
             else if (m_currentOperation.type == Pull)
             {
-                ssh_scp scpSession = ssh_scp_new(m_session,SSH_SCP_READ, m_currentOperation.remotePath.toAscii().data());
+                ssh_scp scpSession = ssh_scp_new(m_session,SSH_SCP_READ, m_currentOperation.remotePath.toUtf8().data());
                 if (scpSession == NULL)
                     error(ScpChannelCreationError);
 
@@ -254,7 +282,7 @@ void QSshSocket::run()
             else if (m_currentOperation.type == Push)
             {
                 // attempt to create new scp from ssh session.
-                ssh_scp scpSession = ssh_scp_new(m_session,SSH_SCP_WRITE, m_currentOperation.remotePath.toAscii().data());
+                ssh_scp scpSession = ssh_scp_new(m_session,SSH_SCP_WRITE, m_currentOperation.remotePath.toUtf8().data());
 
                 // if creation failed, return
                 if (scpSession == NULL)
@@ -291,7 +319,7 @@ void QSshSocket::run()
 
                 // attempt to authorize pushing bytes over scp socket
                 // if this fails, close scp session and return.
-                if (ssh_scp_push_file(scpSession, m_currentOperation.remotePath.toAscii().data(), buffer.size(), S_IRUSR | S_IWUSR) != SSH_OK)
+                if (ssh_scp_push_file(scpSession, m_currentOperation.remotePath.toUtf8().data(), buffer.size(), S_IRUSR | S_IWUSR) != SSH_OK)
                 {
                     ssh_scp_close(scpSession);
                     ssh_scp_free(scpSession);
@@ -334,6 +362,7 @@ void QSshSocket::disconnectFromHost()
     m_host = "";
     m_user = "";
     m_password = "";
+    m_key = "";
     m_port = -1;
     m_loggedIn = false;
     if (m_session != NULL)
@@ -353,6 +382,10 @@ void QSshSocket::login(QString user, QString password)
 {
     m_user = user;
     m_password = password;
+}
+void QSshSocket::setKey(QString key)
+{
+    m_key = key;
 }
 void QSshSocket::executeCommand(QString command)
 {

@@ -94,6 +94,14 @@ public:
     void login(QString user, QString password);
 
     /*!
+        \param prv The private key to login with;
+        \brief This function to login to the currently connected host given private key.
+        On success, the signal authenticated is emitted while error is emmited on failure.
+    */
+
+    void setKey(QString key);
+
+    /*!
         \brief Returns the port of the current connection. If not connected to a remote host, this returns -1.
     */
     int port();
@@ -204,7 +212,7 @@ private:
     int m_port;
     bool m_loggedIn ;
     QThread * m_thread;
-    QString m_workingDirectory,m_nextWorkingDir,m_user, m_host,m_password;
+    QString m_workingDirectory,m_nextWorkingDir,m_user, m_host,m_password,m_key;
     SSHOperation m_currentOperation;
     ssh_session m_session;
     bool m_connected,m_run;
