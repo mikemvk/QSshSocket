@@ -40,8 +40,6 @@ public:
     };
 
     /*!
-        \param position The center position of the box.
-        \param size The size of the box.
         \brief The constructor.
     */
     explicit QSshSocket(QObject * parent = 0);
@@ -94,11 +92,10 @@ public:
     void login(QString user, QString password);
 
     /*!
-        \param prv The private key to login with;
+        \param key The private key to login with;
         \brief This function to login to the currently connected host given private key.
         On success, the signal authenticated is emitted while error is emmited on failure.
     */
-
     void setKey(QString key);
 
     /*!
@@ -108,7 +105,7 @@ public:
 
     /*!
         \param localPath A path to a file stored on the local machine.
-        \param password A path to a file stored on the remote machine.
+        \param remotePath A path to a file stored on the remote machine.
         \brief This function attempts to pull a remote file from the connected host to a local file. The local file does not need to be created beforehand.
         On success, the signal pullSuccessful is emitted while error is emmited on failure.
         If not connected to a remote host, or if the transfer was unsuccessful, the signal error is emitted.
@@ -117,7 +114,7 @@ public:
 
     /*!
         \param localPath A path to a file stored on the local machine.
-        \param password A path to a file stored on the remote machine.
+        \param remotePath A path to a file stored on the remote machine.
         \brief This function attempts to pull a remote file from the connected host to a local file. The local file does not need to be created beforehand.
         On success, the signal pushSuccessful is emitted while error is emmited on failure.
         If not connected to a remote host, or if the transfer was unsuccessful, the signal error is emitted.
