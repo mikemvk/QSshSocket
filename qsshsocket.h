@@ -92,11 +92,17 @@ public:
     void login(QString user, QString password);
 
     /*!
-        \param key The private key to login with;
+        \param key The private key to login with.
         \brief This function to login to the currently connected host given private key.
         On success, the signal authenticated is emitted while error is emmited on failure.
     */
     void setKey(QString key);
+
+    /*!
+        \param timeout Connection timeout in sec.
+        \brief Set timeout for ssh connection in seconds.
+    */
+    void setTimeout(long timeout);
 
     /*!
         \brief Returns the port of the current connection. If not connected to a remote host, this returns -1.
@@ -207,6 +213,7 @@ private:
     };
 
     int m_port;
+    long m_timeout = -1;
     bool m_loggedIn ;
     QThread * m_thread;
     QString m_workingDirectory,m_nextWorkingDir,m_user, m_host,m_password,m_key;

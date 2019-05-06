@@ -50,15 +50,11 @@ $(function() {
 Inheritance diagram for QSshSocket:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQSshSocket__inherit__graph.png" border="0" usemap="#QSshSocket_inherit__map" alt="Inheritance graph"/></div>
-<map name="QSshSocket_inherit__map" id="QSshSocket_inherit__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for QSshSocket:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQSshSocket__coll__graph.png" border="0" usemap="#QSshSocket_coll__map" alt="Collaboration graph"/></div>
-<map name="QSshSocket_coll__map" id="QSshSocket_coll__map">
-</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -144,6 +140,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a312dee880dd036a14cfabc63d9cb7d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQSshSocket.html#a312dee880dd036a14cfabc63d9cb7d6c">setKey</a> (QString key)</td></tr>
 <tr class="memdesc:a312dee880dd036a14cfabc63d9cb7d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function to login to the currently connected host given private key. On success, the signal authenticated is emitted while error is emmited on failure.  <a href="#a312dee880dd036a14cfabc63d9cb7d6c">More...</a><br /></td></tr>
 <tr class="separator:a312dee880dd036a14cfabc63d9cb7d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa23b3869db8039c6a7d99ef4ca492b0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQSshSocket.html#aa23b3869db8039c6a7d99ef4ca492b0d">setTimeout</a> (long timeout)</td></tr>
+<tr class="memdesc:aa23b3869db8039c6a7d99ef4ca492b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout for ssh connection in seconds.  <a href="#aa23b3869db8039c6a7d99ef4ca492b0d">More...</a><br /></td></tr>
+<tr class="separator:aa23b3869db8039c6a7d99ef4ca492b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e7587cb492b264943c8000de5c464b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQSshSocket.html#a9e7587cb492b264943c8000de5c464b8">port</a> ()</td></tr>
 <tr class="memdesc:a9e7587cb492b264943c8000de5c464b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the port of the current connection.  <a href="#a9e7587cb492b264943c8000de5c464b8">More...</a><br /></td></tr>
 <tr class="separator:a9e7587cb492b264943c8000de5c464b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -679,7 +678,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>This function to login to the currently connected host given private key. On success, the signal authenticated is emitted while error is emmited on failure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">key</td><td>The private key to login with; </td></tr>
+    <tr><td class="paramname">key</td><td>The private key to login with. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa23b3869db8039c6a7d99ef4ca492b0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa23b3869db8039c6a7d99ef4ca492b0d">&#9670;&nbsp;</a></span>setTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void QSshSocket::setTimeout </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set timeout for ssh connection in seconds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeout</td><td>Connection timeout in sec. </td></tr>
   </table>
   </dd>
 </dl>

@@ -81,6 +81,8 @@ void QSshSocket::run()
                 ssh_options_set(m_session, SSH_OPTIONS_HOST, m_host.toUtf8().data());
                 ssh_options_set(m_session, SSH_OPTIONS_USER, m_user.toUtf8().data());
                 ssh_options_set(m_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
+                if(m_timeout != -1)
+                  ssh_options_set(m_session, SSH_OPTIONS_TIMEOUT, &m_timeout);
                 ssh_options_set(m_session, SSH_OPTIONS_PORT, &m_port);
 
                 // try to connect given host, user, port
@@ -385,7 +387,12 @@ void QSshSocket::login(QString user, QString password)
 }
 void QSshSocket::setKey(QString key)
 {
-    m_key = key;
+  m_key = key;
+}
+
+void QSshSocket::setTimeout(long timeout)
+{
+  m_timeout = timeout;
 }
 void QSshSocket::executeCommand(QString command)
 {
